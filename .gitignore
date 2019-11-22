@@ -105,6 +105,7 @@ venv.bak/
 
 # others
 .DS_Store
+mlruns/
 loss/
 embeds/
 curves/
