@@ -99,7 +99,7 @@ class Trainer:
     """Trainer Class for ImplicitRecommender."""
 
     def __init__(
-            self, dim: int = 5, lam: float = 1e-5, weight: int = 1, max_iters: int = 500,
+            self, dim: int = 5, lam: float = 1e-5, max_iters: int = 500,
             batch_size: int = 12, eta: float = 0.1, model_name: str = 'oracle') -> None:
         """Initialize class."""
         self.dim = dim
@@ -107,9 +107,7 @@ class Trainer:
         self.batch_size = batch_size
         self.max_iters = max_iters
         self.eta = eta
-        self.weight = weight
-        self.model_name = \
-            model_name + f'_{weight}' if model_name == 'mf' else model_name
+        self.model_name = model_name
         os.makedirs(f'../logs/{model_name}/results', exist_ok=True)
 
     def run(self, iters: int = 5, eps: float = 5.,
@@ -136,9 +134,10 @@ class Trainer:
                     num_users=num_users, num_items=num_items,
                     dim=self.dim, lam=self.lam, eta=self.eta)
                 # train and evaluate the recommender
-                score = rec_trainer(sess, model=rec, train=train, val=val, test=test,
-                                    max_iters=self.max_iters, batch_size=2**self.batch_size,
-                                    model_name=self.model_name, eps=eps, pow=pow, num=i)
+                score = rec_trainer(
+                    sess, model=rec, train=train, val=val, test=test,
+                    max_iters=self.max_iters, batch_size=2**self.batch_size,
+                    model_name=self.model_name, eps=eps, pow=pow, num=i)
                 results.append(score)
                 evaluator = Evaluator(train=train, val=val, test=test,
                                       model_name=self.model_name, save=True)

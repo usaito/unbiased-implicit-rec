@@ -35,7 +35,6 @@ if __name__ == "__main__":
         visualizer = Visualizer()
         visualizer.plot_rel_pred_results(eps=eps, pow_list=pow_list)
         visualizer.plot_overall_results(eps=eps, pow_list=pow_list)
-        visualizer.plot_weight_results()
         visualizer.plot_test_curves(eps=eps, pow_list=pow_list)
 
         mlflow.log_param('eps', eps)

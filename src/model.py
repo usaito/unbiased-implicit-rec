@@ -98,15 +98,13 @@ class ImplicitRecommender(AbstractRecommender):
     """Implicit Recommenders."""
 
     def __init__(self, num_users: np.array, num_items: np.array,
-                 dim: int, lam: float, eta: float, weight: int = 1, clip: float = 0.0) -> None:
+                 dim: int, lam: float, eta: float) -> None:
         """Initialize Class."""
         self.num_users = num_users
         self.num_items = num_items
         self.dim = dim
         self.lam = lam
         self.eta = eta
-        self.clip = clip
-        self.weight = weight
 
         # Build the graphs
         self.create_placeholders()
@@ -158,11 +156,9 @@ class ImplicitRecommender(AbstractRecommender):
             self.ce = - tf.reduce_mean(
                 self.labels * tf.log(self.preds) + (1 - self.labels) * tf.log(1. - self.preds))
             # define the unbiased binary cross entropy loss in Eq. (9).
-            scores = tf.clip_by_value(self.scores, clip_value_min=self.clip, clip_value_max=1.0)
-            self.weighted_ce = - tf.reduce_sum(
-                self.weight * (self.labels / scores) * tf.log(self.preds)
-                + (1 - self.labels / scores) * tf.log(1. - self.preds)) / \
-                tf.reduce_sum(self.weight * self.labels + (1 - self.labels))
+            self.weighted_ce = - tf.reduce_mean(
+                (self.labels / self.scores) * tf.log(self.preds)
+                + (1 - self.labels / self.scores) * tf.log(1. - self.preds))
 
             # add the L2-regularizer terms.
             reg_term_embeds = tf.nn.l2_loss(self.user_embeddings) + tf.nn.l2_loss(self.item_embeddings)

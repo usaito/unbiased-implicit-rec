@@ -14,7 +14,7 @@ from scipy import sparse
 from sklearn.model_selection import train_test_split
 
 metrics = ['DCG', 'Recall', 'MAP']
-models = ['oracle', 'mf_1', 'rmf']
+models = ['oracle', 'mf', 'rmf']
 names = ['Oracle', 'Naive', 'Unbiased']
 colors = ['rgb(31, 119, 180)', 'rgb(255, 127, 14)',
           'rgb(44, 160, 44)', 'rgb(214, 39, 40)',
@@ -106,44 +106,10 @@ class Visualizer:
                 plot(Figure(data=scatter_list, layout=layout), auto_open=False,
                      filename=f'../plots/results/overall/{met}_{eps}_{pow}_K.html')
 
-    def plot_weight_results(
-            self, eps: float = 5.0, pow: float = 1.0) -> None:
-        """Plot results with varying K."""
-        # load results
-        param_list = [1, 5, 20, 50]
-        models = ['rmf', 'mf_1', 'mf_5', 'mf_20', 'mf_50']
-        self._load_and_save_results(models=models, pow_list=[pow])
-        for met in metrics:
-            ret = pd.read_csv(
-                f'../logs/overall/results/ranking_{eps}_{pow}.csv', index_col=0).T[f'{met}@5']
-
-            scatter_list = []
-            scatter_list.append(
-                Scatter(x=param_list, y=np.ones(6) * np.array(ret)[0],
-                        marker=dict(size=20), line=dict(width=6), name='Unbiased'))
-            scatter_list.append(
-                Scatter(x=param_list, y=np.array(ret)[1:],
-                        marker=dict(size=20), line=dict(width=6), name='WMF'))
-
-            layout = Layout(
-                title=dict(text=f'{met}@5', font=dict(size=40), x=0.5, xanchor='center', y=0.99),
-                paper_bgcolor='rgb(255,255,255)', plot_bgcolor='rgb(235,235,235)', width=1000, height=800,
-                xaxis=dict(title='Weight of WMF (c)', type='log', titlefont=dict(size=25),
-                           tickmode='array', tickvals=param_list, ticktext=param_list,
-                           tickfont=dict(size=20), gridcolor='rgb(255,255,255)'),
-                yaxis=dict(tickfont=dict(size=15), gridcolor='rgb(255,255,255)'),
-                legend=dict(bgcolor='rgb(245,245,245)', x=0.01, xanchor='left',
-                            orientation='h', y=0.99, yanchor='top', font=dict(size=32)),
-                margin=dict(l=50, t=50, b=60))
-            plot(Figure(data=scatter_list, layout=layout), auto_open=False,
-                 filename=f'../plots/results/weight/{met}.html')
-
     def plot_test_curves(
             self, eps: float = 5.0,
             pow_list: List[float] = [0.5, 1.0, 2.0, 3.0, 4.0],) -> None:
         """Plot test curves."""
-        models = ['oracle', 'mf_1', 'rmf']
-        names = ['Oracle', 'Naive', 'Unbiased']
         for pow in pow_list:
             scatter_list = []
             for i, model in enumerate(models):

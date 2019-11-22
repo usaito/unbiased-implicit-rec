@@ -23,7 +23,6 @@ parser.add_argument('--pow_list', default=[1.], type=float, nargs='*', help='pow
 parser.add_argument('--dim', default=10, type=int, help='dim of user-item latent factors')
 parser.add_argument('--lam', default=1e-5, type=float, help='weight of l2 reguralization')
 parser.add_argument('--eta', default=1e-1, type=float, help='learning_rate for SGD')
-parser.add_argument('--weight', default=1, type=int, help='weight for weighted matrix factorization')
 parser.add_argument('--batch_size', default=12, type=int, help='batch_size for mini-batch sampling')
 parser.add_argument('--max_iters', default=500, type=int, help='maximun num of iterations for SGD')
 parser.add_argument('--iters', default=5, type=int, help='num of simulations')
@@ -40,12 +39,10 @@ if __name__ == "__main__":
     dim = args.dim
     lam = args.lam
     eta = args.eta
-    weight = args.weight
     batch_size = args.batch_size
     max_iters = args.max_iters
     iters = args.iters
-    model_name = \
-        args.model_name + f'_{weight}' if args.model_name == 'mf' else args.model_name
+    model_name = args.model_name
 
     # run simulations
     mlflow.set_experiment('semi-sys-wsdm')
@@ -71,7 +68,6 @@ if __name__ == "__main__":
         mlflow.log_param('batch_size', batch_size)
         mlflow.log_param('max_iters', max_iters)
         mlflow.log_param('iters', iters)
-        mlflow.log_param('weight', weight)
         mlflow.log_param('model_name', model_name)
 
         mlflow.log_artifacts(f'../logs/{model_name}/results/')

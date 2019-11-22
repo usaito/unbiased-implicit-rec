@@ -26,9 +26,7 @@ If you find this code useful in your research then please cite:
   - mlflow==1.3.0
 
 ### Running the code
-To run the simulation with semi-synthetic data,
-
-First, download MovieLens 100K dataset from (https://grouplens.org/datasets/movielens/) and rename the `u.data` as `ml-100k.data` and put it into `data/ml-100k` directory. Then, navigate to the `src/` directory and run the command
+To run the simulation with semi-synthetic data, download MovieLens 100K dataset from (https://grouplens.org/datasets/movielens/) and rename the `u.data` as `ml-100k.data` and put it into `data/ml-100k` directory. Then, navigate to the `src/` directory and run the command
 
 ```
 $ sh run.sh
@@ -55,9 +53,3 @@ By running the codes above, you can obtain the figures below.
 |<img src="./image/eps-5.png"> | <img src="./image/dcg-05.png">| <img src="./image/dcg-2.png">| <img src="./image/dcg-4.png">|
 
 You will also have the results of other ranking metrics including MAP and Recall.
-
-In addition, the weight parameter of WMF does not provide the improvements of ranking metrics in the MNAR setting. (which is not included in the paper.)
-
-| Additional Figure |
-|:-: |
-|<img src="./image/weight_of_wmf.png" width="200"> |
