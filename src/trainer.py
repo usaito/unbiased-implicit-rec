@@ -45,9 +45,9 @@ def rec_trainer(sess: tf.Session, model: ImplicitRecommender,
 
     # train the given implicit recommender
     np.random.seed(12345)
-    for i in np.arange(max_iters):
+    for _ in np.arange(max_iters):
         # mini-batch samples
-        idx = np.random.choice(np.arange(train.shape[0], dtype=int), size=batch_size)
+        idx = np.random.choice(np.arange(num_train), size=batch_size)
         train_batch = train[idx]
         train_label = train_batch[:, 6] if oracle else train_batch[:, 2]
         val_label = val[:, 6] if oracle else val[:, 2]
@@ -85,9 +85,12 @@ def rec_trainer(sess: tf.Session, model: ImplicitRecommender,
     np.save(file=f'../logs/{model_name}/embeds/item_bias.npy', arr=i_bias)
     # save train and val loss curves.
     os.makedirs(f'../logs/{model_name}/loss/', exist_ok=True)
-    np.save(file=f'../logs/{model_name}/loss/train_{eps}_{pow}_{num}.npy', arr=np.array(train_loss_list))
-    np.save(file=f'../logs/{model_name}/loss/val_{eps}_{pow}_{num}.npy', arr=np.array(val_loss_list))
-    np.save(file=f'../logs/{model_name}/loss/test_{eps}_{pow}_{num}.npy', arr=np.array(test_loss_list))
+    np.save(file=f'../logs/{model_name}/loss/train_{eps}_{pow}_{num}.npy',
+            arr=np.array(train_loss_list))
+    np.save(file=f'../logs/{model_name}/loss/val_{eps}_{pow}_{num}.npy',
+            arr=np.array(val_loss_list))
+    np.save(file=f'../logs/{model_name}/loss/test_{eps}_{pow}_{num}.npy',
+            arr=np.array(test_loss_list))
 
     # close the session.
     sess.close()
@@ -122,11 +125,13 @@ class Trainer:
             num_items = np.int(data[:, 1].max() + 1)
             # data splitting
             train, test = data, data[data[:, 2] == 0, :]  # train-test split
-            train, val = train_test_split(train, test_size=0.1, random_state=0)  # train-val split
+            train, val = train_test_split(
+                train, test_size=0.1, random_state=0)  # train-val split
 
             for i in np.arange(iters):
                 # define the TF graph
-                tf.set_random_seed(i)  # different initialization of model parameters for each iteration
+                # different initialization of model parameters for each iteration
+                tf.set_random_seed(i)
                 ops.reset_default_graph()
                 sess = tf.Session()
                 # define the implicit recommender model
@@ -143,4 +148,5 @@ class Trainer:
                                       model_name=self.model_name, save=True)
                 evaluator.evaluate(eps=eps, pow=pow)
         results = np.array(results).reshape((len(pow_list), iters)).T
-        np.save(f'../logs/{self.model_name}/results/eps_{eps}.npy', arr=results)
+        np.save(
+            f'../logs/{self.model_name}/results/eps_{eps}.npy', arr=results)

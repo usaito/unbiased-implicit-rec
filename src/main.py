@@ -13,18 +13,25 @@ import pandas as pd
 import tensorflow as tf
 
 from trainer import Trainer
-from visualizer import Visualizer
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument('model_name', type=str, choices=['oracle', 'mf', 'rmf'], help='a used model')
-parser.add_argument('--eps', default=5., type=float, help='epsilon for generating relevance parameter')
-parser.add_argument('--pow_list', default=[1.], type=float, nargs='*', help='pow_lister of theta for generating exposure parameter')
-parser.add_argument('--dim', default=10, type=int, help='dim of user-item latent factors')
-parser.add_argument('--lam', default=1e-5, type=float, help='weight of l2 reguralization')
-parser.add_argument('--eta', default=1e-1, type=float, help='learning_rate for SGD')
-parser.add_argument('--batch_size', default=12, type=int, help='batch_size for mini-batch sampling')
-parser.add_argument('--max_iters', default=500, type=int, help='maximun num of iterations for SGD')
+parser.add_argument('model_name', type=str,
+                    choices=['oracle', 'mf', 'rmf'], help='a used model')
+parser.add_argument('--eps', default=5., type=float,
+                    help='epsilon for generating relevance parameter')
+parser.add_argument('--pow_list', default=[1.], type=float, nargs='*',
+                    help='pow_lister of theta for generating exposure parameter')
+parser.add_argument('--dim', default=10, type=int,
+                    help='dim of user-item latent factors')
+parser.add_argument('--lam', default=1e-5, type=float,
+                    help='weight of l2 reguralization')
+parser.add_argument('--eta', default=1e-1, type=float,
+                    help='learning_rate for SGD')
+parser.add_argument('--batch_size', default=12, type=int,
+                    help='batch_size for mini-batch sampling')
+parser.add_argument('--max_iters', default=500, type=int,
+                    help='maximun num of iterations for SGD')
 parser.add_argument('--iters', default=5, type=int, help='num of simulations')
 
 
@@ -52,10 +59,6 @@ if __name__ == "__main__":
             max_iters=max_iters, eta=eta, model_name=model_name)
         trainer.run(eps=eps, pow_list=pow_list)
 
-        visualizer = Visualizer()
-        visualizer.plot_learning_curves(
-            eps=eps, pow_list=pow_list, model=model_name)
-
         print('\n', '=' * 25, '\n')
         print(f'Finished Running {model_name}!')
         print('\n', '=' * 25, '\n')
@@ -71,4 +74,3 @@ if __name__ == "__main__":
         mlflow.log_param('model_name', model_name)
 
         mlflow.log_artifacts(f'../logs/{model_name}/results/')
-        mlflow.log_artifacts(f'../plots/curves/{model_name}/')

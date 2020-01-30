@@ -16,8 +16,10 @@ from visualizer import Visualizer
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument('--eps', default=5., type=float, help='epsilon for generating relevance parameter')
-parser.add_argument('--pow_list', default=[1.], type=float, nargs='*', help='pow_lister of theta for generating exposure parameter')
+parser.add_argument('--eps', default=5., type=float,
+                    help='epsilon for generating relevance parameter')
+parser.add_argument('--pow_list', default=[1.], type=float, nargs='*',
+                    help='pow_lister of theta for generating exposure parameter')
 
 
 if __name__ == "__main__":
@@ -34,7 +36,7 @@ if __name__ == "__main__":
     with mlflow.start_run() as run:
         visualizer = Visualizer()
         visualizer.plot_rel_pred_results(eps=eps, pow_list=pow_list)
-        visualizer.plot_overall_results(eps=eps, pow_list=pow_list)
+        visualizer.plot_ranking_results(eps=eps, pow_list=pow_list)
         visualizer.plot_test_curves(eps=eps, pow_list=pow_list)
 
         mlflow.log_param('eps', eps)
