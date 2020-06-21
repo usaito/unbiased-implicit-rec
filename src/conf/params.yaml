@@ -1,0 +1,12 @@
+model_params:
+  dim: 10
+  lam: 0.00001
+  eta: 0.1
+  max_iters: 1000
+  batch_size: 12
+generate_sys_params:
+  iters: 300
+  batch_size: 256
+  dim: 20
+  eta: 0.01
+

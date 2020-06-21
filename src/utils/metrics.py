@@ -1,6 +1,4 @@
 """Evaluation metrics for Collaborative Filltering with Implicit Feedback."""
-from typing import Callable, Dict, List, Optional
-
 import numpy as np
 
 

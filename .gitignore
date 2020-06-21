@@ -109,3 +109,7 @@ mlruns/
 loss/
 embeds/
 curves/
+logs/
+plots/
+data/
+note.md
