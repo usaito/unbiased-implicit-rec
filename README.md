@@ -45,7 +45,7 @@ done
 This will run semi-synthetic experiments conducted in Section 5 with a fixed value of epsilon (=5) over 5 different values of power of theta (0.5, 1, 2, 3, 4). Besides, Figure1 will be generated.
 
 
-Once the code is finished executing, run the following command in, and then the experimental results will be stored in `/plots/` directory.
+After the main code is finished executing, run the following command to visualize the experimental results. Then, the figures will be stored in `/plots/` directory.
 
 ```
 python visualize.py \
@@ -61,4 +61,4 @@ By running the codes above, you can obtain the figures below.
 | :---------------------------: | :----------------------------: | :---------------------------: | :---------------------------: |
 | <img src="./image/eps-5.png"> | <img src="./image/dcg-05.png"> | <img src="./image/dcg-2.png"> | <img src="./image/dcg-4.png"> |
 
-You will also have the results of other ranking metrics including MAP and Recall.
+You will also have the results of other ranking metrics such as MAP and Recall.
